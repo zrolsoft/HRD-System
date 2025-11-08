@@ -47,12 +47,12 @@ def create_employee():
         db.session.commit()
         
         return jsonify(employee.to_dict()), 201
-    except IntegrityError as e:
+    except IntegrityError:
         db.session.rollback()
         return jsonify({'error': 'Employee ID or email already exists'}), 409
-    except Exception as e:
+    except Exception:
         db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': 'Failed to create employee'}), 500
 
 @bp.route('/<int:id>', methods=['PUT'])
 def update_employee(id):
@@ -86,9 +86,9 @@ def update_employee(id):
     except IntegrityError:
         db.session.rollback()
         return jsonify({'error': 'Email already exists'}), 409
-    except Exception as e:
+    except Exception:
         db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': 'Failed to update employee'}), 500
 
 @bp.route('/<int:id>', methods=['DELETE'])
 def delete_employee(id):
@@ -99,6 +99,6 @@ def delete_employee(id):
         db.session.delete(employee)
         db.session.commit()
         return jsonify({'message': 'Employee deleted successfully'}), 200
-    except Exception as e:
+    except Exception:
         db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': 'Failed to delete employee'}), 500

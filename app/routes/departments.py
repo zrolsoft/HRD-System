@@ -39,9 +39,9 @@ def create_department():
     except IntegrityError:
         db.session.rollback()
         return jsonify({'error': 'Department name already exists'}), 409
-    except Exception as e:
+    except Exception:
         db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': 'Failed to create department'}), 500
 
 @bp.route('/<int:id>', methods=['PUT'])
 def update_department(id):
@@ -60,9 +60,9 @@ def update_department(id):
     except IntegrityError:
         db.session.rollback()
         return jsonify({'error': 'Department name already exists'}), 409
-    except Exception as e:
+    except Exception:
         db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': 'Failed to update department'}), 500
 
 @bp.route('/<int:id>', methods=['DELETE'])
 def delete_department(id):
@@ -77,9 +77,9 @@ def delete_department(id):
         db.session.delete(department)
         db.session.commit()
         return jsonify({'message': 'Department deleted successfully'}), 200
-    except Exception as e:
+    except Exception:
         db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': 'Failed to delete department'}), 500
 
 @bp.route('/<int:id>/employees', methods=['GET'])
 def get_department_employees(id):
